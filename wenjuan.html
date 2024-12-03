@@ -135,23 +135,173 @@
         margin: 0;
         padding: 0
     }
+
+    .disabled {
+        pointer-events: none;
+        background-color: gray;
+    }
 </style>
 <script>
-    clickA = ()=>{
+    lingquan = () =>
+    {
         target = document.querySelector('.HBDv2');
         target.className = 'HBDv2 _25xQG';
         target.innerText = '已领取';
-        window.setTimeout(()=>{
+        window.setTimeout(() =>
+        {
             history.back();
-        }, 1000);
+        }, 700);
+    }
+
+    const appId = 'u5pWcozRkszZa6trQkNcHdzG-gzGzoHsz';
+    const appKey = '2Ej07YLEQhCqyVWVVYhsWOxc';
+    const host = 'u5pwcozr.lc-cn-n1-shared.com';
+    const objectId = 'lingquan';
+    const url = `https://${host}/1.1/classes/${objectId}`;
+    const headers = {
+        'X-LC-Id': appId,
+        'X-LC-Key': appKey,
+        'Content-Type': 'application/json'
+    };
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // 获取 phone 参数
+    const phone = urlParams.get('phone');
+    console.log(phone);  // 输出: 12345678901
+    async function queryByPhone ()
+    {
+        const url = `https://${host}/1.1/classes/${objectId}?where={"phone":"${phone}","lingquan":true}`;
+
+        const headers = {
+            'X-LC-Id': appId,
+            'X-LC-Key': appKey,
+            'Content-Type': 'application/json'
+        };
+
+        try
+        {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: headers
+            });
+
+            if (!response.ok)
+            {
+                throw new Error('请求失败');
+            }
+
+            const data = await response.json();
+
+            if (data.results.length > 0)
+            {
+                lingquan();
+                return data.results;  // 返回查询到的数据
+            } else
+            {
+                console.log('未找到该手机号的数据');
+                target = document.querySelector('.HBDv2');
+                target.className = 'HBDv2';
+                target.innerText = '立即领取';
+                return null;
+            }
+        } catch (error)
+        {
+            console.error('查询失败:', error);
+            return null;
+        }
+    }
+    async function upsertByPhone ()
+    {
+        const url = `https://${host}/1.1/classes/${objectId}?where={"phone":"${phone}"}`;
+        const headers = {
+            'X-LC-Id': appId,
+            'X-LC-Key': appKey,
+            'Content-Type': 'application/json'
+        };
+
+        try
+        {
+            // Step 1: 查询是否已存在该手机号
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: headers
+            });
+
+            if (!response.ok)
+            {
+                throw new Error('查询失败');
+            }
+
+            const data = await response.json();
+
+            // Step 2: 如果存在记录，则使用 PUT 更新；如果不存在，则使用 POST 添加新记录
+            if (data.results.length > 0)
+            {
+                // 记录已存在，执行更新
+                const objectIdToUpdate = data.results[0].objectId;  // 获取要更新的记录的 objectId
+                const updateUrl = `https://${host}/1.1/classes/${objectId}/${objectIdToUpdate}`;
+                const body = JSON.stringify({
+                    lingquan: true
+                });
+
+                const updateResponse = await fetch(updateUrl, {
+                    method: 'PUT',
+                    headers: headers,
+                    body: body
+                });
+
+                if (!updateResponse.ok)
+                {
+                    throw new Error('更新失败');
+                }
+
+                const updatedData = await updateResponse.json();
+                console.log('更新成功:', updatedData);
+                lingquan();
+                return updatedData;
+            } else
+            {
+                // 记录不存在，执行添加
+                const createUrl = `https://${host}/1.1/classes/${objectId}`;
+                const body = JSON.stringify({
+                    phone: phone,
+                    lingquan: true
+                });
+
+                const createResponse = await fetch(createUrl, {
+                    method: 'POST',
+                    headers: headers,
+                    body: body
+                });
+
+                if (!createResponse.ok)
+                {
+                    throw new Error('添加失败');
+                }
+
+                const createdData = await createResponse.json();
+                console.log('添加成功:', createdData);
+                lingquan();
+                return createdData;
+            }
+        } catch (error)
+        {
+            console.error('操作失败:', error);
+            return null;
+        }
+    }
+    window.onload = () =>
+    {
+        queryByPhone()
+
     }
 </script>
 <div class="_2oarX _1_d9c" style="margin-top: 0px;">
     <div class="_2e8va">
         <p class="_1_BXz false"><strong class="_1jCFl"><span
                     class="_1_-8f">¥</span><span>1598</span></strong><span>（满8398.00可用）</span></p>
-        <p class="_2Dm6f">有效期：2024.12.08-2024.12.08</p><a onclick="clickA()">
-            <div class="HBDv2">立即领取</div>
+        <p class="_2Dm6f">有效期：2024.12.08-2024.12.08</p><a onclick="upsertByPhone()">
+            <div class="HBDv2 disabled">请稍等...</div>
         </a>
     </div>
     <div class="_2CqLR">
