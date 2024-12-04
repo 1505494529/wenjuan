@@ -1,0 +1,278 @@
+<html class="no-js" lang="en" style="font-size: 100px;" data-dpr="1">
+<style type="text/css" id="s1930-0">
+    ._2oarX {
+        width: 108.48px;
+        width: 6.78rem;
+        margin: 0 auto 6.4px;
+        margin: 0 auto .4rem;
+        font-size: 3.84px;
+        font-size: .24rem;
+        line-height: 3.84px;
+        line-height: .24rem;
+        color: #a85d1b;
+        -webkit-border-radius: .08rem;
+        -moz-border-radius: .08rem;
+        border-radius: .08rem;
+        background-color: #fffaee;
+        -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+        -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+        box-shadow: 0 1px 0 rgba(0, 0, 0, .05)
+    }
+
+    ._2e8va {
+        margin-top: 9.6px;
+        margin-top: .6rem;
+        position: relative;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        height: 31.04px;
+        height: 1.94rem;
+        padding: 4.64px 6.4px 0;
+        padding: .29rem .4rem 0;
+        background-repeat: no-repeat;
+        -webkit-background-size: 100% 100%;
+        -moz-background-size: 100% 100%;
+        background-size: 100% 100%;
+        background-image: url("https://ydschool-video.nosdn.127.net/1723517353937bg%403x.png");
+        overflow: hidden
+    }
+
+    .HBDv2 {
+        position: absolute;
+        text-align: center;
+        top: 10.88px;
+        top: .68rem;
+        right: 6.4px;
+        right: .4rem;
+        color: #fff;
+        font-size: 4.8px;
+        font-size: .3rem;
+        width: 29.12px;
+        width: 1.82rem;
+        height: 11.68px;
+        height: .73rem;
+        line-height: 11.68px;
+        line-height: .73rem;
+        -webkit-border-radius: .08rem;
+        -moz-border-radius: .08rem;
+        border-radius: .08rem;
+        background-color: #fb4a3e
+    }
+
+    ._25xQG {
+        background-color: #ff9830
+    }
+
+    ._1_BXz {
+        margin-bottom: 1.76px;
+        margin-bottom: .11rem;
+        max-width: 63.04px;
+        max-width: 3.94rem;
+        overflow: hidden;
+        white-space: nowrap;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        line-height: 4.16px;
+        line-height: .26rem
+    }
+
+    ._2Dm6f {
+        max-width: 63.04px;
+        max-width: 3.94rem;
+        overflow: hidden;
+        white-space: nowrap;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        line-height: 4.16px;
+        line-height: .26rem
+    }
+
+    ._1jCFl {
+        font-size: 12.8px;
+        font-size: .8rem;
+        line-height: 12.8px;
+        line-height: .8rem
+    }
+
+    ._1_-8f {
+        font-weight: 600;
+        display: inline-block;
+        font-weight: 500;
+        font-size: 6.4px;
+        font-size: .4rem;
+        line-height: 6.4px;
+        line-height: .4rem;
+        margin-right: .8px;
+        margin-right: .05rem
+    }
+
+    ._2CqLR {
+        padding: 4.48px 4.88px 3.52px 6.4px;
+        padding: .28rem .305rem .22rem .4rem;
+        color: #cc9a5e;
+        -webkit-border-radius: .08rem;
+        -moz-border-radius: .08rem;
+        border-radius: .08rem
+    }
+
+    ._3a3Es {
+        display: inline-block;
+        line-height: 1.5;
+        margin-top: -.96px;
+        margin-top: -.06rem;
+        max-width: 84.8px;
+        max-width: 5.3rem;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        white-space: pre-wrap
+    }
+
+    p {
+        orphans: 3;
+        widows: 3;
+        margin: 0;
+        padding: 0
+    }
+
+    .disabled {
+        pointer-events: none;
+        background-color: gray;
+    }
+
+    .greenBg {
+        background-color: #35aa2c;
+    }
+</style>
+<script>
+    lingquan = () =>
+    {
+        target = document.querySelector('.HBDv2');
+        target.className = 'HBDv2 _25xQG';
+        target.innerText = '已领取';
+        window.setTimeout(() =>
+        {
+            history.back();
+        }, 700);
+    }
+
+    const appId = 'u5pWcozRkszZa6trQkNcHdzG-gzGzoHsz';
+    const appKey = '2Ej07YLEQhCqyVWVVYhsWOxc';
+    const host = 'u5pwcozr.lc-cn-n1-shared.com';
+    const objectId = 'lingquan_config';
+    const url = `https://${host}/1.1/classes/${objectId}`;
+    const headers = {
+        'X-LC-Id': appId,
+        'X-LC-Key': appKey,
+        'Content-Type': 'application/json'
+    };
+    let dataList = {}
+    async function queryByPhone ()
+    {
+        const url = `https://${host}/1.1/classes/${objectId}`;
+
+        const headers = {
+            'X-LC-Id': appId,
+            'X-LC-Key': appKey,
+            'Content-Type': 'application/json'
+        };
+
+        try
+        {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: headers
+            });
+
+            if (!response.ok)
+            {
+                throw new Error('请求失败');
+            }
+
+            const data = await response.json();
+            dataList = data.results;
+            console.log(data);
+            //results转{key:value},key为键为key的值，value为键为value的值
+            const dataObj = data.results.reduce((acc, item) =>
+            {
+                acc[item.key] = item.value;
+                return acc;
+            }, {});
+
+            document.querySelector('#price').value = dataObj.price;
+            document.querySelector('#limit').value = dataObj.limit;
+            document.querySelector('#date').value = dataObj.date;
+            document.querySelector('#describe').value = dataObj.describe;
+            target = document.querySelector('.HBDv2');
+            target.className = 'HBDv2 greenBg';
+            target.innerText = '提交';
+        } catch (error)
+        {
+            console.error('查询失败:', error);
+            return null;
+        }
+    }
+    async function upsertByPhone ()
+    {
+        const headers = {
+            'X-LC-Id': appId,
+            'X-LC-Key': appKey,
+            'Content-Type': 'application/json'
+        };
+
+        try
+        {
+            for (let item of dataList)
+            {
+                const updateUrl = `https://${host}/1.1/classes/${objectId}/${item.objectId}`;
+                const body = JSON.stringify({
+                    value:document.querySelector(`#${item.key}`).value
+                });
+
+                const updateResponse = await fetch(updateUrl, {
+                    method: 'PUT',
+                    headers: headers,
+                    body: body
+                });
+
+                if (!updateResponse.ok)
+                {
+                    throw new Error('更新失败');
+                }
+
+                const updatedData = await updateResponse.json();
+                console.log('更新成功:', updatedData);
+                console.log(item);
+                
+            }
+            location.reload();
+            return true
+        } catch (error)
+        {
+            console.error('操作失败:', error);
+            return null;
+        }
+    }
+    window.onload = () =>
+    {
+        queryByPhone()
+
+    }
+</script>
+<div class="_2oarX _1_d9c" style="margin-top: 0px;">
+    <div class="_2e8va">
+        <p class="_1_BXz false"><strong class="_1jCFl"><span class="_1_-8f">¥</span><span><span><input id="price"
+                            style="width: 100px;" /></span></strong><span>（满<input id="limit"
+                    style="width: 100px;" />可用）</span></p>
+        <p class="_2Dm6f">有效期：<input id="date" /></p><a onclick="upsertByPhone()">
+            <div class="HBDv2 disabled">请稍等...</div>
+        </a>
+    </div>
+    <div class="_2CqLR">
+        <div class="_3a3Es"><textarea id="describe" style="width: 400px;height: 80px;"></textarea><br></div>
+    </div>
+</div>
+
+</html>
