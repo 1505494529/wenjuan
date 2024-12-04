@@ -181,7 +181,7 @@
 
         try
         {
-            const response = await fetch(url, {
+            let response = await fetch(`https://${host}/1.1/classes/lingquan_config`, {
                 method: 'GET',
                 headers: headers
             });
@@ -191,7 +191,31 @@
                 throw new Error('请求失败');
             }
 
-            const data = await response.json();
+            let data = await response.json();
+            console.log(data);
+            //results转{key:value},key为键为key的值，value为键为value的值
+            const dataObj = data.results.reduce((acc, item) =>
+            {
+                acc[item.key] = item.value;
+                return acc;
+            }, {});
+
+            document.querySelector('#price').innerText = dataObj.price;
+            document.querySelector('#limit').innerText = `（满${dataObj.limit}可用）`;
+            document.querySelector('#date').innerText = `有效期：${dataObj.date}`;
+            document.querySelector('#describe').innerText = dataObj.describe;
+
+            response = await fetch(url, {
+                method: 'GET',
+                headers: headers
+            });
+
+            if (!response.ok)
+            {
+                throw new Error('请求失败');
+            }
+
+            data = await response.json();
 
             if (data.results.length > 0)
             {
@@ -300,13 +324,13 @@
 <div class="_2oarX _1_d9c" style="margin-top: 0px;">
     <div class="_2e8va">
         <p class="_1_BXz false"><strong class="_1jCFl"><span
-                    class="_1_-8f">¥</span><span>1598</span></strong><span>（满8398.00可用）</span></p>
-        <p class="_2Dm6f">有效期：2024.12.08-2024.12.08</p><a onclick="upsertByPhone()">
+                    class="_1_-8f">¥</span><span id="price"></span></strong><span id="limit"></span></p>
+        <p class="_2Dm6f" id="date"></p><a onclick="upsertByPhone()">
             <div class="HBDv2 disabled">请稍等...</div>
         </a>
     </div>
     <div class="_2CqLR">
-        <div class="_3a3Es">指定课程范围:《信息学备战全程规划C++编程进阶班C3》《信息学备战全程规划C++编程冲刺班C4》<br></div>
+        <div class="_3a3Es" id="describe"><br></div>
     </div>
 </div>
 </html>
