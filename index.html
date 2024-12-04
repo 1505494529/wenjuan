@@ -131,8 +131,9 @@
         'X-LC-Key': appKey,
         'Content-Type': 'application/json'
     };
-    async function upsertByPhone ()
+    async function upsertByPhone (event)
     {
+        event.preventDefault();
         const phone = document.querySelector('#phone').value;
         const url = `https://${host}/1.1/classes/${objectId}?where={"phone":"${phone}"}`;
         const headers = {
@@ -217,29 +218,29 @@
 <body>
     <div class="form-container">
         <div class="form-header">趣味C++课程预约</div>
-
-        <div class="form-group">
-            <label for="name">
-                <span class="required">*</span> 学员姓名:
-            </label>
-            <input type="text" id="name" name="name" placeholder="请输入您的姓名" required>
-        </div>
-        <div class="form-group">
-            <label for="phone">
-                <span class="required">*</span> 课程报名手机号:
-            </label>
-            <input type="tel" id="phone" name="phone" placeholder="请输入您的手机号" required>
-        </div>
-        <div class="form-group">
-            <label for="phone">
-                <span class="required">*</span> 正确填写手机号后点击下方领取优惠券:
-            </label>
-            <a href="/wenjuan/wenjuan.html" id="coupon-link" class="disabled">点击领取优惠券</a>
-        </div>
-        <div class="form-submit">
-            <button type="submit" onclick="upsertByPhone()">提交</button>
-        </div>
-
+        <form onsubmit="upsertByPhone(event)">
+            <div class="form-group">
+                <label for="name">
+                    <span class="required">*</span> 学员姓名:
+                </label>
+                <input type="text" id="name" name="name" placeholder="请输入您的姓名" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">
+                    <span class="required">*</span> 课程报名手机号:
+                </label>
+                <input type="tel" id="phone" name="phone" placeholder="请输入您的手机号" required pattern="^1[3-9]\d{9}$" title="请输入有效的手机号">
+            </div>
+            <div class="form-group">
+                <label for="phone">
+                    <span class="required">*</span> 正确填写手机号后点击下方领取优惠券:
+                </label>
+                <a href="/wenjuan/wenjuan.html" id="coupon-link" class="disabled">点击领取优惠券</a>
+            </div>
+            <div class="form-submit">
+                <button type="submit">提交</button>
+            </div>
+        </form>
     </div>
 </body>
 <script>
