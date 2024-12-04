@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据查看页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .filter-input {
+            margin-bottom: 20px;
+            padding: 10px;
+            width: 100%;
+            max-width: 400px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 16px;
+        }
+
+        /* 给是否领取优惠券列不同的颜色 */
+        .coupon-yes {
+            background-color: #4CAF50;
+            /* 绿色 */
+            color: white;
+            font-weight: bold;
+        }
+
+        .coupon-no {
+            background-color: #f44336;
+            /* 红色 */
+            color: white;
+            font-weight: bold;
+        }
+
+        .HBDv2 {
+            text-align: center;
+            top: 50px;
+            right: 30px;
+            color: #fff;
+            font-size: 20px;
+            width: 150px;
+            height: 50px;
+            background-color: #fb4a3e;
+            outline: none;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>数据查看页面</h1>
+    <input class="filter-input" type="text" id="filterInput" placeholder="输入姓名或电话进行过滤...">
+    <button class="HBDv2" onclick="delData()">清空数据</button>
+    <table>
+        <thead>
+            <tr>
+                <th>电话</th>
+                <th>姓名</th>
+                <th>是否领取优惠券</th>
+            </tr>
+        </thead>
+        <tbody id="dataBody">
+            <!-- 数据行将由 JavaScript 动态生成 -->
+        </tbody>
+    </table>
+
+    <script>
+        const appId = 'u5pWcozRkszZa6trQkNcHdzG-gzGzoHsz';
+        const appKey = '2Ej07YLEQhCqyVWVVYhsWOxc';
+        const host = 'u5pwcozr.lc-cn-n1-shared.com';
+        const objectId = 'lingquan';
+        const url = `https://${host}/1.1/classes/${objectId}?where={"del":{"$ne":true}}`;
+        const headers = {
+            'X-LC-Id': appId,
+            'X-LC-Key': appKey,
+            'Content-Type': 'application/json'
+        };
+        let dataList = [];
+        (async () =>
+        {
+
+            response = await fetch(url, {
+                method: 'GET',
+                headers: headers
+            });
+
+            if (!response.ok)
+            {
+                throw new Error('请求失败');
+            }
+
+            const res = await response.json();
+            console.log(res.results);
+
+            // 模拟数据
+            let data = [
+                { phone: "123-456-7890", name: "Alice", coupon: "是" },
+                { phone: "234-567-8901", name: "Bob", coupon: "否" },
+                { phone: "345-678-9012", name: "Charlie", coupon: "是" },
+                { phone: "456-789-0123", name: "Diana", coupon: "否" },
+                { phone: "567-890-1234", name: "Eve", coupon: "是" }
+            ];
+
+            data = res.results;
+            dataList = data;
+
+            // 获取表格体和输入框元素
+            const dataBody = document.getElementById("dataBody");
+            const filterInput = document.getElementById("filterInput");
+
+            // 渲染表格行
+            function renderTable (filteredData)
+            {
+                dataBody.innerHTML = ""; // 清空现有内容
+                filteredData.forEach(item =>
+                {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                    <td>${item.phone}</td>
+                    <td>${item.name}</td>
+                    <td class="${item.lingquan === true ? '' : 'coupon-no'}">${item.lingquan === true ? '是' : '否'}</td>
+                `;
+                    dataBody.appendChild(row);
+                });
+            }
+
+            // 过滤数据并重新渲染表格
+            filterInput.addEventListener("input", (e) =>
+            {
+                const filterValue = e.target.value.toLowerCase();
+                const filteredData = data.filter(item =>
+                    item.phone.includes(filterValue) || item.name.toLowerCase().includes(filterValue)
+                );
+                renderTable(filteredData);
+            });
+
+            // 初始渲染
+            renderTable(data);
+        })();
+        delData = async () =>
+        {
+            const confirmation = prompt("请输入“立即删除”以确认删除所有数据：");
+            if (confirmation === "立即删除")
+            {
+                console.log(dataList);
+                let list = []
+                for (let item of dataList)
+                {
+                    list.push({
+                        method: "PUT",
+                        path: `/1.1/classes/${objectId}/${item.objectId}`,
+                        body: {
+                            del: true
+                        }
+                    })
+                }
+                console.log(list);
+                
+                (async () =>
+                {
+                    response = await fetch(`https://${host}/1.1/batch`, {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify({
+                            requests:list
+                        })
+                    });
+
+                    if (!response.ok)
+                    {
+                        throw new Error('请求失败');
+                    }
+
+                    const res = await response.json();
+                    console.log(res);
+                })();
+                console.log("数据已清空");
+                location.reload();
+            } else
+            {
+                console.log("取消删除操作");
+            }
+        }
+    </script>
+</body>
+
+</html>
