@@ -119,7 +119,7 @@
 <script>
     lingquan = () =>
     {
-        window.location.href = '/wenjuan/success.html';
+        window.location.href = '/success.html';
     }
     const appId = 'u5pWcozRkszZa6trQkNcHdzG-gzGzoHsz';
     const appKey = '2Ej07YLEQhCqyVWVVYhsWOxc';
@@ -235,7 +235,7 @@
                 <label for="phone">
                     <span class="required">*</span> 正确填写手机号后点击下方领取优惠券:
                 </label>
-                <a href="/wenjuan/wenjuan.html" id="coupon-link" class="disabled">点击领取优惠券</a>
+                <a href="#" id="coupon-link" class="disabled">点击领取优惠券</a>
             </div>
             <div class="form-submit">
                 <button type="submit">提交</button>
@@ -258,11 +258,11 @@
         if (phonePattern.test(phoneValue))
         {
             couponLink.classList.remove('disabled');
-            couponLink.href = `/wenjuan/wenjuan.html?phone=${phoneValue}`;
+            couponLink.href = `/wenjuan.html?phone=${phoneValue}`;
         } else
         {
             couponLink.classList.add('disabled');
-            couponLink.href = `/wenjuan/wenjuan.html?phone=null`;
+            couponLink.href = `/wenjuan.html?phone=null`;
         }
     });
 </script>
