@@ -95,6 +95,8 @@
                 <th>电话</th>
                 <th>姓名</th>
                 <th>是否领取优惠券</th>
+                <th>创建时间</th>
+                <th>修改时间</th>
             </tr>
         </thead>
         <tbody id="dataBody">
@@ -157,6 +159,8 @@
                     <td>${item.phone}</td>
                     <td>${item.name}</td>
                     <td class="${item.lingquan === true ? '' : 'coupon-no'}">${item.lingquan === true ? '是' : '否'}</td>
+                    <td>${item.createdAt}</td>
+                    <td>${item.updatedAt}</td>
                 `;
                     dataBody.appendChild(row);
                 });
