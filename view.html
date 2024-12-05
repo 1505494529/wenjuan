@@ -146,7 +146,19 @@
             // 获取表格体和输入框元素
             const dataBody = document.getElementById("dataBody");
             const filterInput = document.getElementById("filterInput");
-
+            function formatDate(dateString) {
+              const updatedAt = new Date(dateString);
+            
+              return updatedAt.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false // 使用24小时制
+              }).replace(/\//g, '-').replace(',', ''); // 将分隔符从 / 改为 -，去除逗号
+            }
             // 渲染表格行
             function renderTable (filteredData)
             {
@@ -158,7 +170,7 @@
                     <td>${item.phone}</td>
                     <td>${item.name}</td>
                     <td class="${item.lingquan === true ? '' : 'coupon-no'}">${item.lingquan === true ? '是' : '否'}</td>
-                    <td>${item.updatedAt}</td>
+                    <td>${formatDate(item.updatedAt)}</td>
                 `;
                     dataBody.appendChild(row);
                 });
